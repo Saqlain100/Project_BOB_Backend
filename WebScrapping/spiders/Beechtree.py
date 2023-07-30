@@ -17,6 +17,16 @@ class QuotesSpider(scrapy.Spider):
     def start_requests(self):
         current_directory = os.getcwd()
         logging.warning("directory="+current_directory)
+        for root, dirs, files in os.walk(current_directory):
+            # List all directories
+            for dir_name in dirs:
+                dir = os.path.join(root, dir_name)
+
+            # List all files
+            for file_name in files:
+                files = os.path.join(root, file_name)
+        logging.warning("directories=" + dir)
+        logging.warning("files=" + files)
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "WebScrapping/spacy-model-best"
