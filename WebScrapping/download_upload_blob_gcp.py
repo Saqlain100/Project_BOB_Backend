@@ -7,7 +7,7 @@ from io import BytesIO
 
 
 # Path to your service account key JSON file
-credentials_path = r"D:\Downloads\boutiqueofbrands-a4ba1b0d7277.json"
+credentials_path = "boutiqueofbrands-a4ba1b0d7277.json"
 
 def download_and_resize_image(url, file_path, width, height):
     response = requests.get(url, stream=True)
