@@ -16,7 +16,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         current_directory = os.getcwd()
-        logging.warning("directory="+current_directory)
+        logging.warning("directory="+os.path.abspath(current_directory))
         for root, dirs, files in os.walk(current_directory):
             # List all directories
             for dir_name in dirs:
