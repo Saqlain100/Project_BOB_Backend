@@ -3,3 +3,4 @@ pillow
 spacy
 scrapy
 google-cloud-storage
+itemadapter
