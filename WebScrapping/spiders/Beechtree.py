@@ -3,6 +3,7 @@ from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
+import logging
 
 class QuotesSpider(scrapy.Spider):
     name = "Beechtree"
@@ -15,6 +16,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         current_directory = os.getcwd()
+        logging.warning("directory="+current_directory)
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
