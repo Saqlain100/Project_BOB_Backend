@@ -4,7 +4,7 @@ import requests
 from PIL import Image
 import os
 from io import BytesIO
-
+import gdown
 
 # Path to your service account key JSON file
 credentials_path = "boutiqueofbrands-a4ba1b0d7277.json"
@@ -23,6 +23,9 @@ def download_upload(json_docs):
     height = 500
     directory = 'Stores_Images'
     image_final_urls = []
+    if (os.path.exists(credentials_path)==False):
+        url = 'https://drive.google.com/file/d/1WpZ9D_g9npg2BAVYotaOcU8V4It2r5ER/view?usp=sharing'
+        gdown.download(url, quiet=False)
     if not os.path.exists(directory):
         os.makedirs(directory)
     for json in json_docs:

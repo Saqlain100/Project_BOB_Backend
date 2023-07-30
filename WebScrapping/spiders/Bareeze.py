@@ -4,6 +4,7 @@ from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
+import gdown
 import math
 
 
@@ -19,11 +20,16 @@ class QuotesSpider(scrapy.Spider):
             hash = (hash * 281 ^ ord(ch) * 997) & 0xFFFFFFFF
         return hash
 
+
     def start_requests(self):
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
+        if (os.path.exists(model_path) == False):
+            gdown.download_folder(
+                "https://drive.google.com/drive/folders/12-Z-WPVXvVwmu3g914ciuWDszfsjG0DT?usp=drive_link",
+                quiet=True)
         self.nlp_ner = spacy.load(model_path)
         urls = ["https://www.bareeze.com/pk/sale.html?p=" + str(i) for i in range(1, 500)]
         for url in urls:
