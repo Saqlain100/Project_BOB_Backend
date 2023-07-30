@@ -17,19 +17,19 @@ class QuotesSpider(scrapy.Spider):
     def start_requests(self):
         current_directory = os.getcwd()
         logging.warning("directory="+os.path.abspath(current_directory))
-        for root, dirs, files in os.walk(current_directory):
-            # List all directories
-            for dir_name in dirs:
-                dir = os.path.join(root, dir_name)
-
-            # List all files
-            for file_name in files:
-                files = os.path.join(root, file_name)
-        logging.warning("directories=" + dir)
-        logging.warning("files=" + files)
+        # for root, dirs, files in os.walk(current_directory):
+        #     # List all directories
+        #     for dir_name in dirs:
+        #         dir = os.path.join(root, dir_name)
+        #
+        #     # List all files
+        #     for file_name in files:
+        #         files = os.path.join(root, file_name)
+        # logging.warning("directories=" + dir)
+        # logging.warning("files=" + files)
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
-        model_path = "WebScrapping/spacy-model-best"
+        model_path = "spacy-model-best"
         self.nlp_ner = spacy.load(model_path)
         urls_stitched = ["https://beechtree.pk/collections/sale-unstitched/?page=" + str(i) for i in range(1, 200)]
         urls_pret = ["https://beechtree.pk/collections/sale-pret?page=" + str(i) for i in range(1, 200)]
