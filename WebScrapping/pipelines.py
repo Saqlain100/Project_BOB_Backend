@@ -3,8 +3,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 import pysolr
-from constants import solr_username
-from constants import solr_password
+
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
@@ -14,8 +13,8 @@ class WebscrappingPipeline:
 
     solr = None
     def __init__(self):
-        print("user is", solr_password)
-        print("pass is",solr_password)
+        solr_username = 'admin'
+        solr_password = 'NH4LLLw274ZZ'
         self.solr = pysolr.Solr('http://34.129.190.144/solr/stores/update?commit=true', auth=(solr_username,solr_password), always_commit=True,verify=False)
 
 
