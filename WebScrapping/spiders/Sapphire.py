@@ -6,6 +6,7 @@ import os
 import requests
 import json
 import gdown
+from nltk.corpus import stopwords
 
 class QuotesSpider(scrapy.Spider):
     name = "Sapphire"
@@ -65,8 +66,7 @@ class QuotesSpider(scrapy.Spider):
         entities = []
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
-        items["highlight"] = entities
-        items["highlight_labels"] = labels
+        items["highlight"] = list(set([word for word in entities if word not in (stopwords.words('english'))]))
         arr = []
         arr.append(items)
         try:

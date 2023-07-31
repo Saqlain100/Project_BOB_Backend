@@ -5,3 +5,4 @@ scrapy
 google-cloud-storage
 itemadapter
 gdown
+nltk

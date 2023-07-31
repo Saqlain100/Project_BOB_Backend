@@ -40,7 +40,6 @@ class WebscrappingPipeline:
              "image_links_ss": item["image_links"],
              "image_links_txt": item["image_links"],
              "highlight_txt": item["highlight"],
-             "highlight_labels_txt" : item["highlight_labels"],
              "final_urls_ss":item["final_urls"],
              "final_urls_txt": item["final_urls"]
              }])

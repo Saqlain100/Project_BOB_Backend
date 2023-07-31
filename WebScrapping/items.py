@@ -22,5 +22,4 @@ class WebscrappingItem(scrapy.Item):
     final_price = scrapy.Field()
     image_links = scrapy.Field()
     highlight = scrapy.Field()
-    highlight_labels = scrapy.Field()
     final_urls=scrapy.Field()
