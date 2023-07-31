@@ -4,7 +4,7 @@ import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
-from nltk.corpus import stopwords
+
 
 class QuotesSpider(scrapy.Spider):
     name = "Limelight"
@@ -69,7 +69,7 @@ class QuotesSpider(scrapy.Spider):
         doc = self.nlp_ner(description)
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
-        items["highlight"] = list(set([word for word in entities if word not in (stopwords.words('english'))]))
+        items["highlight"] = list(set(entities))
         arr = []
         arr.append(items)
         try:
