@@ -7,7 +7,7 @@ from io import BytesIO
 import gdown
 
 # Path to your service account key JSON file
-credentials_path = "boutiqueofbrands-a4ba1b0d7277.json"
+credentials_path = "ContainerSecurity/boutiqueofbrands-a4ba1b0d7277.json"
 
 def download_and_resize_image(url, file_path, width, height):
     response = requests.get(url, stream=True)
@@ -24,8 +24,8 @@ def download_upload(json_docs):
     directory = 'Stores_Images'
     image_final_urls = []
     if (os.path.exists(credentials_path)==False):
-        url = 'https://drive.google.com/file/d/1WpZ9D_g9npg2BAVYotaOcU8V4It2r5ER/view?usp=sharing'
-        gdown.download(url, quiet=False)
+        gdown.download_folder("https://drive.google.com/drive/folders/14VLco9UxzXP1I9fgVP1-1YkZu8774GmB?usp=sharing",
+                              quiet=True)
     if not os.path.exists(directory):
         os.makedirs(directory)
     for json in json_docs:
