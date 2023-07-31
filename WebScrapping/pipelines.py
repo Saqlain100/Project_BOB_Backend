@@ -41,6 +41,7 @@ class WebscrappingPipeline:
              "image_links_txt": item["image_links"],
              "highlight_txt": item["highlight"],
              "final_urls_ss":item["final_urls"],
-             "final_urls_txt": item["final_urls"]
+             "final_urls_txt": item["final_urls"],
+             "updated_date_dt": item["updated_date_dt"]
              }])
         return item

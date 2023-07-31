@@ -23,3 +23,4 @@ class WebscrappingItem(scrapy.Item):
     image_links = scrapy.Field()
     highlight = scrapy.Field()
     final_urls=scrapy.Field()
+    updated_date_dt=scrapy.Field()

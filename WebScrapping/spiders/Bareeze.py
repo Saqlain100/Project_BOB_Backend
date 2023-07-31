@@ -5,11 +5,7 @@ import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
-
-
-
-
-
+from datetime import datetime
 
 class QuotesSpider(scrapy.Spider):
     name = "Bareeze"
@@ -74,6 +70,11 @@ class QuotesSpider(scrapy.Spider):
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
         items["highlight"] = list(set(entities))
+        current_date = datetime.now()
+        # Format the date according to the Solr date format
+        solr_date_format = "%Y-%m-%dT%H:%M:%SZ"
+        solr_formatted_date = current_date.strftime(solr_date_format)
+        items["updated_date_dt"] = solr_formatted_date
         arr = []
         arr.append(items)
         try:
