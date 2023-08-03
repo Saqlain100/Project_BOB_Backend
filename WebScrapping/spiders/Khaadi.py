@@ -5,6 +5,7 @@ from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
 from datetime import datetime
+import json
 
 class QuotesSpider(scrapy.Spider):
     name = "Khaadi"
@@ -17,7 +18,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        urls = ["https://pk.khaadi.com/sale.html?p=" + str(i) for i in range(1, 500)]
+        urls = [" https://pk.khaadi.com/sale/?lang=en_PK&p=" + str(i) for i in range(1, 500)]
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
@@ -32,23 +33,23 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        article_urls = response.xpath('//*/a[@class="product-item-link"]/@href').extract()
+        article_urls = response.xpath('//div[@class="pdp-link"]/a/@href').extract()
         for article_url in article_urls:
-            yield scrapy.Request(article_url, callback=self.parse_dir_contents)
+            yield scrapy.Request("https://pk.khaadi.com"+article_url, callback=self.parse_dir_contents)
 
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
-        title = response.xpath('//*/h1[@class="page-title"]//text()').extract_first()
+        title = response.xpath('//h2[@class="product-name"]/text()').extract_first()
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
-        description = ','.join(response.xpath('//*/div[@id="Details"]//text()').extract())
+        description = json.loads(response.xpath("//script[@type='application/ld+json']/text()").extract_first())['description']
         old_price = response.xpath(
-            '//*/div[@class="product-info-main"]//span[@data-price-type="oldPrice"]/@data-price-amount').extract_first()
+            '//span[@class="value cc-price"]/@content').extract_first()
         if old_price == None:
             old_price = 0
         final_price = response.xpath(
-            '//*/div[@class="product-info-main"]//span[@data-price-type="finalPrice"]/@data-price-amount').extract_first()
-        image_links = response.xpath(
-            '//*/div[@class="MagicToolboxSelectorsContainer"]//*/img[contains(@src,"catalog/product")]/@src').extract()
+            '//span[contains(@class,"sales")]/span[@class="value cc-price"]/@content').extract_first()
+        image_links = ['https://pk.khaadi.com/dw/image/v2/BJTG_PRD'+item for item in json.loads(response.xpath(
+            "//script[@type='application/ld+json']/text()").extract_first())['image']]
         items["id"] = self.myHash(response.url)
         items["store"] = self.name
         items["url"] = response.url
