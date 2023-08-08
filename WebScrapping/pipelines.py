@@ -42,6 +42,9 @@ class WebscrappingPipeline:
              "highlight_txt": item["highlight"],
              "final_urls_ss":item["final_urls"],
              "final_urls_txt": item["final_urls"],
-             "updated_date_dt": item["updated_date_dt"]
+             "updated_date_dt": item["updated_date_dt"],
+             "likes_i":0,
+             "loves_i":0,
+             "views_i":0
              }])
         return item
