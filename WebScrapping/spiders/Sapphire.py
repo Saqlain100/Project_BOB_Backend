@@ -3,7 +3,7 @@ from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
-from bs4 import BeautifulSoupquests
+from bs4 import BeautifulSoup
 import json
 import gdown
 from datetime import datetime
