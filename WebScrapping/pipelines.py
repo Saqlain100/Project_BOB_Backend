@@ -20,7 +20,14 @@ class WebscrappingPipeline:
 
 
     def process_item(self,item, spider):
-
+        docs = self.solr.search(q=f"id:{item['id']}", rows=1).docs
+        likes = 0
+        loves = 0
+        views = 0
+        if len(docs) > 0:
+            likes = docs["likes_i"][0]
+            loves = docs["loves_i"][0]
+            views = docs["views_i"][0]
         self.solr.add([
             {"store_t": item["store"],
              "store_s": item["store"],
@@ -43,8 +50,9 @@ class WebscrappingPipeline:
              "final_urls_ss":item["final_urls"],
              "final_urls_txt": item["final_urls"],
              "updated_date_dt": item["updated_date_dt"],
-             "likes_i":0,
-             "loves_i":0,
-             "views_i":0
+             "body":item["body"],
+             "likes_i":likes,
+             "loves_i":loves,
+             "views_i":views
              }])
         return item

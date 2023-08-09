@@ -6,7 +6,7 @@ import os
 import gdown
 import datetime
 import pysolr
-
+import re
 class QuotesSpider(scrapy.Spider):
     name = "Synchronize"
     # Path to your service account key JSON file

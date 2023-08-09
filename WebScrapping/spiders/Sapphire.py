@@ -3,11 +3,11 @@ from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
-import requests
+from bs4 import BeautifulSoupquests
 import json
 import gdown
 from datetime import datetime
-
+from bs4 import BeautifulSoup
 
 class QuotesSpider(scrapy.Spider):
     name = "Sapphire"
@@ -58,6 +58,8 @@ class QuotesSpider(scrapy.Spider):
         items["old_price"] = old_price
         items["final_price"] = final_price
         items["image_links"] = image_links
+        soup = BeautifulSoup(response.text, "html.parser")
+        items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"]-items["final_price_d"])/items["old_price_d"])*100)
         except Exception as e:

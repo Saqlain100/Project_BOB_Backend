@@ -6,7 +6,8 @@ from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
 from datetime import datetime
-
+from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 class QuotesSpider(scrapy.Spider):
     name = "Bareeze"
 
@@ -60,6 +61,8 @@ class QuotesSpider(scrapy.Spider):
         items["final_price_d"] = float(str(final_price).replace("PKR","").replace(",","").strip())
         items["final_price"] = final_price.replace(r"\n"," ").strip()
         items["image_links"] = image_links
+        soup = BeautifulSoup(response.text, "html.parser")
+        items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"]-items["final_price_d"])/items["old_price_d"])*100)
         except Exception as e:
