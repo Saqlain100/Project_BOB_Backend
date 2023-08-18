@@ -51,7 +51,7 @@ class QuotesSpider(scrapy.Spider):
             print(f"Deleted object: {obj.name}")
 
     def start_requests(self):
-        self.delete_documents_by_query('http://34.129.190.144/solr/stores/update?commit=true', 'updated_date_dt', 7)
+        self.delete_documents_by_query('http://34.129.54.101/solr/stores/update?commit=true', 'updated_date_dt', 7)
         self.delete_old_objects('bob-bucket', 'Images', 8)
 
 

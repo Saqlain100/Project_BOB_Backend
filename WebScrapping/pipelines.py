@@ -15,7 +15,7 @@ class WebscrappingPipeline:
     def __init__(self):
         solr_username = 'admin'
         solr_password = 'NH4LLLw274ZZ'
-        self.solr = pysolr.Solr('http://34.129.190.144/solr/stores/update?commit=true', auth=(solr_username,solr_password), always_commit=True,verify=False)
+        self.solr = pysolr.Solr('http://34.129.54.101/solr/stores/update?commit=true', auth=(solr_username,solr_password), always_commit=True,verify=False)
 
 
 

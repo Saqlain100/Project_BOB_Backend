@@ -42,7 +42,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         # Create a connection to your Solr instance
-        solr = pysolr.Solr('http://34.129.190.144/solr/stores',auth=(self.solr_username, self.solr_password))
+        solr = pysolr.Solr('http://34.129.54.101/solr/stores',auth=(self.solr_username, self.solr_password))
         # Step 1: Fetch all document IDs
         query_all_ids = 'discount_d:[1 TO 90]'
         response = solr.search(query_all_ids, rows=50000)  # Adjust rows as needed
