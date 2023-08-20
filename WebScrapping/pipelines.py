@@ -53,6 +53,7 @@ class WebscrappingPipeline:
              "body":item["body"],
              "likes_i":likes,
              "loves_i":loves,
-             "views_i":views
+             "views_i":views,
+             "joined_t":str(item["id"])+"!!!"+item["final_urls"][0]+"!!!"+str(item["discount_d"])+"!!!"+str(item["final_price_d"])
              }])
         return item
