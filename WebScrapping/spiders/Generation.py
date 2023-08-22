@@ -47,6 +47,7 @@ class QuotesSpider(scrapy.Spider):
         final_price = response.xpath("//span[contains(@class,'ProductMeta__Price Price Price--highlight')]/text()").extract_first()
         image_links = response.xpath(
             "//div[@class='Product__SlideshowNavScroller']/a/img/@src").extract()
+        image_links = [str(item).replace("_160","_500") for item in image_links]
         items["id"] = self.myHash(response.url)
         items["store"] = self.name
         items["url"] = response.url
