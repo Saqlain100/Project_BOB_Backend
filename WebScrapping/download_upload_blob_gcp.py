@@ -15,8 +15,8 @@ def download_and_resize_image(url, file_path, width, height):
 
     with open(file_path, 'wb') as file:
         with Image.open(BytesIO(response.content)) as image:
-            resized_image = image.resize((width, height))
-            resized_image.save(file_path)
+            # resized_image = image.resize((width, height))
+            image.save(file_path)
 
 def download_upload(json_docs):
     width = 500
