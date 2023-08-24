@@ -45,7 +45,7 @@ class QuotesSpider(scrapy.Spider):
         solr = pysolr.Solr('http://34.129.54.101/solr/stores',auth=(self.solr_username, self.solr_password))
         # Step 1: Fetch all document IDs
         query_all_ids = 'discount_d:[20 TO 90]'
-        response = solr.search(query_all_ids, rows=1000)  # Adjust rows as needed
+        response = solr.search(query_all_ids, rows=999)  # Adjust rows as needed
         all_document_ids = [doc['id'] for doc in response]
         # Step 2: Randomly select document IDs
         num_random_documents = 30  # Choose the number of random documents you want
