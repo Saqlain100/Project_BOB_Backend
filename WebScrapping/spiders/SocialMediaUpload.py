@@ -1,4 +1,6 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
+import logging
+
 import scrapy
 import pysolr
 import json
@@ -44,17 +46,31 @@ class QuotesSpider(scrapy.Spider):
         # Create a connection to your Solr instance
         solr = pysolr.Solr('http://34.129.54.101/solr/stores',auth=(self.solr_username, self.solr_password))
         # Step 1: Fetch all document IDs
-        query_all_ids = 'discount_d:[20 TO 90]'
-        response = solr.search(query_all_ids, rows=999)  # Adjust rows as needed
-        all_document_ids = [doc['id'] for doc in response]
-        # Step 2: Randomly select document IDs
-        num_random_documents = 30  # Choose the number of random documents you want
-        random_document_ids = random.sample(all_document_ids, num_random_documents)
+        params = {
+            'q': 'discount_d:[20 TO 90]',  # The search query
+            'rows': 1000,  # Number of rows (results) per page
+            'start': 0,  # Starting offset for pagination
+            'defType': 'edismax',
+            'bq': ' Embroidered ',
+        }
 
-        # Step 3: Fetch documents using chosen IDs
-        query_random_documents = f'id:({" OR ".join(random_document_ids)})'
-        random_documents = solr.search(query_random_documents)
-        for result in random_documents:
+        response = solr.search(**params)  # Adjust rows as needed
+        ids = []
+        for doc in response:
+            ids.append(doc['id'])
+
+        # Convert IDs to a filter query string
+        rand_lst = random.sample(ids, 50)
+        id_filter_query = 'id:' + ' OR id:'.join(rand_lst)
+        # Define other parameters if needed
+        params = {
+            'q': '*:*',  # Match all documents
+            'fq': id_filter_query,
+            'rows': len(rand_lst),  # Number of rows (results) to return
+        }
+        response = solr.search(**params)
+        logging.info("solr docs:"+str(len(response)))
+        for result in response:
             time.sleep(2)
             self.publish_image_insta(result['final_urls_ss'][0],"\nStore:"+result["store_s"]+"\nTitle:"+result["title_s"]+"\nLink:"+result["url_s"]+"\nPrice: Rs "+str(result["new_price_d"])+"\nDiscount:"+str(result["discount_d"])+"%")
             time.sleep(2)
