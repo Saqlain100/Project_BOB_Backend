@@ -1,4 +1,3 @@
-#from reusable_components.download_upload_blob_gcp import download_upload
 import scrapy
 from ..items import WebscrappingItem
 import spacy
@@ -7,10 +6,9 @@ import os
 import gdown
 from datetime import datetime
 from bs4 import BeautifulSoup
-from bs4 import BeautifulSoup
-import re
+import json
 class QuotesSpider(scrapy.Spider):
-    name = "Sapphire"
+    name = "Khasstores"
 
     def myHash(self, text: str):
         hash = 0
@@ -18,8 +16,9 @@ class QuotesSpider(scrapy.Spider):
             hash = (hash * 281 ^ ord(ch) * 997) & 0xFFFFFFFF
         return hash
 
-
     def start_requests(self):
+
+        urls = ["https://www.khasstores.com/collections/sale?page="+str(i) for i in range(1,200)]
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
@@ -29,18 +28,24 @@ class QuotesSpider(scrapy.Spider):
                 "https://drive.google.com/drive/folders/12-Z-WPVXvVwmu3g914ciuWDszfsjG0DT?usp=drive_link",
                 quiet=True)
         self.nlp_ner = spacy.load(model_path)
-        urls = ["https://pk.sapphireonline.pk/collections/special-offer-sale?page=" + str(i) for i in range(1, 500)]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        article_urls = re.findall(r'"url":\s+"(https?://[^"]+)"', response.xpath("//script[contains(text(),'unit_sale_price')]/text()").extract_first().replace('\n', '').replace('  ', ''))
+        article_urls = []
+        json_data =json.loads(
+            response.xpath("//script[@type='application/ld+json']/text()").extract_first().replace("\n", "").replace(
+                "\t", ""))['mainEntity']['itemListElement']
+        for dictionary in json_data:
+            article_urls.append(dictionary['item']['url'])
+        print(article_urls)
         for article_url in article_urls:
+            article_url = article_url
             yield scrapy.Request(article_url, callback=self.parse_dir_contents)
 
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
-        title = response.xpath("//title/text()").extract_first().replace(r"\n", "").strip()
+        title = response.xpath("//title/text()").extract_first().replace(r"\n","").strip()
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
         description = response.xpath("//meta[@name='description']/@content").extract_first()
         old_price = response.xpath(
@@ -55,16 +60,16 @@ class QuotesSpider(scrapy.Spider):
         items["url"] = response.url
         items["title"] = title
         items["category"] = category
-        items["description"] = description.replace(r"\n", " ").strip()
+        items["description"] = description.replace(r"\n"," ").strip()
         items["old_price"] = old_price
-        items["old_price_d"] = float(str(old_price).replace("Rs.", "").replace(",", "").strip(" "))
-        items["final_price_d"] = float(str(final_price).replace("Rs.", "").replace(",", "").strip(" "))
+        items["old_price_d"] = float(str(old_price).replace("Rs.","").replace(",","").strip(" "))
+        items["final_price_d"] = float(str(final_price).replace("Rs.", "").replace(",","").strip(" "))
         items["final_price"] = final_price
         items["image_links"] = image_links
         soup = BeautifulSoup(response.text, "html.parser")
         items["body"] = soup.get_text()
         try:
-            items["discount_d"] = round(((items["old_price_d"] - items["final_price_d"]) / items["old_price_d"]) * 100)
+            items["discount_d"] = round(((items["old_price_d"]-items["final_price_d"])/items["old_price_d"])*100)
         except Exception as e:
             items["discount_d"] = 0
         labels = []
