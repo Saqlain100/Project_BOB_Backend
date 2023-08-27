@@ -47,7 +47,7 @@ class QuotesSpider(scrapy.Spider):
             "//p[@class='price_range']//del/text()").extract_first()
         if old_price == None:
             old_price = 0
-        final_price = response.xpath("//p[@class='price_range']//del/text()").extract_first()
+        final_price = response.xpath("//p[@class='price_range']//ins/text()").extract_first()
         image_links = response.xpath(
             "//meta[@property='og:image']/@content").extract()
         items["id"] = self.myHash(response.url)
@@ -65,6 +65,7 @@ class QuotesSpider(scrapy.Spider):
         items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"] - items["final_price_d"]) / items["old_price_d"]) * 100)
+            items["save_d"] = round(items["old_price_d"] - items["final_price_d"])
         except Exception as e:
             items["discount_d"] = 0
         labels = []

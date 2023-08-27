@@ -65,6 +65,7 @@ class QuotesSpider(scrapy.Spider):
         items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"] - items["final_price_d"]) / items["old_price_d"]) * 100)
+            items["save_d"] = round(items["old_price_d"] - items["final_price_d"])
         except Exception as e:
             items["discount_d"] = 0
         labels = []

@@ -20,6 +20,7 @@ class QuotesSpider(scrapy.Spider):
 
 
     def start_requests(self):
+
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
@@ -65,6 +66,7 @@ class QuotesSpider(scrapy.Spider):
         items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"] - items["final_price_d"]) / items["old_price_d"]) * 100)
+            items["save_d"] = round(items["old_price_d"] - items["final_price_d"])
         except Exception as e:
             items["discount_d"] = 0
         labels = []
@@ -73,8 +75,9 @@ class QuotesSpider(scrapy.Spider):
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
         items["highlight"] = list(set(entities))
-        current_date = datetime.now()
+
         # Format the date according to the Solr date format
+        current_date = datetime.now()
         solr_date_format = "%Y-%m-%dT%H:%M:%SZ"
         solr_formatted_date = current_date.strftime(solr_date_format)
         items["updated_date_dt"] = solr_formatted_date

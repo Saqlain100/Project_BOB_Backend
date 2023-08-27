@@ -50,7 +50,7 @@ class WebscrappingPipeline:
              "final_urls_ss":item["final_urls"],
              "final_urls_txt": item["final_urls"],
              "updated_date_dt": item["updated_date_dt"],
-             "body":item["body"],
+             "save_d": item["save_d"],
              "likes_i":likes,
              "loves_i":loves,
              "views_i":views,
