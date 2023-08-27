@@ -5,12 +5,14 @@ import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
-from datetime import datetime
+from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 from bs4 import BeautifulSoup
 import re
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "ACEgalleria"
+  
 
     def myHash(self, text: str):
         hash = 0
@@ -20,7 +22,7 @@ class QuotesSpider(scrapy.Spider):
 
 
     def start_requests(self):
-
+        self.start_date = datetime.now()
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
@@ -63,7 +65,7 @@ class QuotesSpider(scrapy.Spider):
         items["final_price"] = final_price
         items["image_links"] = image_links
         soup = BeautifulSoup(response.text, "html.parser")
-        items["body"] = soup.get_text()
+        # items["body"] = soup.get_text()
         try:
             items["discount_d"] = round(((items["old_price_d"] - items["final_price_d"]) / items["old_price_d"]) * 100)
             items["save_d"] = round(items["old_price_d"] - items["final_price_d"])
@@ -77,7 +79,8 @@ class QuotesSpider(scrapy.Spider):
         items["highlight"] = list(set(entities))
 
         # Format the date according to the Solr date format
-        current_date = datetime.now()
+        self.counter += 1
+        current_date = self.start_date - timedelta(seconds=self.counter)
         solr_date_format = "%Y-%m-%dT%H:%M:%SZ"
         solr_formatted_date = current_date.strftime(solr_date_format)
         items["updated_date_dt"] = solr_formatted_date

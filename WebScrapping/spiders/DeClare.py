@@ -4,9 +4,10 @@ import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
-from datetime import datetime
+from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "DeClare"
 
     def myHash(self, text: str):
@@ -16,6 +17,7 @@ class QuotesSpider(scrapy.Spider):
         return hash
 
     def start_requests(self):
+        self.start_date = datetime.now()
 
         urls = ["https://declarepakistan.com/search?q=sale&page="+str(i) for i in range(1,200)]
         current_directory = os.getcwd()
@@ -72,7 +74,8 @@ class QuotesSpider(scrapy.Spider):
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
         items["highlight"] = list(set(entities))
-        current_date = datetime.now()
+        self.counter += 1
+        current_date = self.start_date - timedelta(seconds=self.counter)
         # Format the date according to the Solr date format
         solr_date_format = "%Y-%m-%dT%H:%M:%SZ"
         solr_formatted_date = current_date.strftime(solr_date_format)

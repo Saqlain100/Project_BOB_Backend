@@ -3,6 +3,7 @@ from ..items import WebscrappingItem
 import spacy
 
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "MariaB"
 
     def myHash(self, text: str):
@@ -12,6 +13,7 @@ class QuotesSpider(scrapy.Spider):
         return hash
 
     def start_requests(self):
+        self.start_date = datetime.now()
 
         urls = ["https://www.mariab.pk/collections/all-sale?page=" + str(i) for i in range(1, 20)]
         model_path = r"D:\Work\BoutiqueOfBrands\BOB_Backend\Datasources\WebScrapping\WebScrapping\model-best"

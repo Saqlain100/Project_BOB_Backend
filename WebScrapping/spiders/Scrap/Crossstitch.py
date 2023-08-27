@@ -3,6 +3,7 @@ from ..items import WebscrappingItem
 from scrapy_splash import SplashRequest
 
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "Crossstitch"
 
     def myHash(self, text: str):
@@ -12,6 +13,7 @@ class QuotesSpider(scrapy.Spider):
         return hash
 
     def start_requests(self):
+        self.start_date = datetime.now()
 
         urls = [
             'https://crossstitch.pk/collections/sale?page=1', 'https://crossstitch.pk/collections/sale?page=6',

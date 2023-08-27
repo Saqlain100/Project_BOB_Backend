@@ -5,10 +5,11 @@ import spacy
 from ..download_upload_blob_gcp import download_upload
 import os
 import gdown
-from datetime import datetime
+from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 from bs4 import BeautifulSoup
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "Bareeze"
 
     def myHash(self, text: str):
@@ -19,6 +20,7 @@ class QuotesSpider(scrapy.Spider):
 
 
     def start_requests(self):
+        self.start_date = datetime.now()
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
@@ -40,7 +42,6 @@ class QuotesSpider(scrapy.Spider):
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
         title = response.xpath("//h1[@class='page-title']/span/text()").extract_first()
-        print(title)
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
         description = response.xpath("//div[@itemprop='description']/text()").extract_first()
         old_price = response.xpath(
@@ -74,7 +75,8 @@ class QuotesSpider(scrapy.Spider):
         labels = [ent.label_ for ent in doc.ents]
         entities = [entity.text for entity in doc.ents]
         items["highlight"] = list(set(entities))
-        current_date = datetime.now()
+        self.counter += 1
+        current_date = self.start_date - timedelta(seconds=self.counter)
         # Format the date according to the Solr date format
         solr_date_format = "%Y-%m-%dT%H:%M:%SZ"
         solr_formatted_date = current_date.strftime(solr_date_format)

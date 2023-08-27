@@ -4,6 +4,7 @@ from scrapy_splash import SplashRequest
 
 
 class QuotesSpider(scrapy.Spider):
+    counter = 0
     name = "SanaSafinaz"
 
     def myHash(self, text: str):
@@ -13,6 +14,7 @@ class QuotesSpider(scrapy.Spider):
         return hash
 
     def start_requests(self):
+        self.start_date = datetime.now()
 
         urls_ready = ["https://www.sanasafinaz.com/pk/sale/ready-to-wear.html?p=" + str(i) for i in range(1, 10)]
         urls_unstitched = ["https://www.sanasafinaz.com/pk/sale/unstitched-fabric.html?p=" + str(i) for i in range(1, 10)]
