@@ -5,7 +5,7 @@ from PIL import Image
 import os
 from io import BytesIO
 import gdown
-import PIL
+
 # Path to your service account key JSON file
 credentials_path = "ContainerSecurity/boutiqueofbrands-a4ba1b0d7277.json"
 
@@ -15,7 +15,7 @@ def download_and_resize_image(url, file_path, width, height):
 
     with open(file_path, 'wb') as file:
         with Image.open(BytesIO(response.content)) as image:
-            resized_image = image.resize((width, height),PIL.Image.LANCZOS)
+            # resized_image = image.resize((width, height))
             image.save(file_path)
 
 def download_upload(json_docs):
@@ -46,6 +46,8 @@ def download_upload(json_docs):
                     image_url = image.replace("_120", "_500")
                 elif json["store"] == "Beechtree":
                     image_url = image.replace("compact.jpg", "500x500.jpg")
+                elif json["store"] == "SanaSafinaz":
+                    image_url = image.split(".jpg")[0]+".jpg"
                 else:
                     image_url = image
                 try:
