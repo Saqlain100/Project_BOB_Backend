@@ -29,7 +29,7 @@ class QuotesSpider(scrapy.Spider):
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
-        if (os.path.exists(model_path) == False):
+        if (True):
             zip_url = "https://storage.googleapis.com/bob-bucket/spacy-model-best.zip"
             extract_dir = ''
             # Send an HTTP GET request to download the ZIP file

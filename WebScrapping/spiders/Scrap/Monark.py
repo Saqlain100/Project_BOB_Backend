@@ -29,7 +29,7 @@ class QuotesSpider(scrapy.Spider):
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
-        if (os.path.exists(model_path) == False):
+        if (True):
             gdown.download_folder(
                 "https://drive.google.com/drive/folders/1TUDGfH2gJYD-gFAKjYGT0d0cqUwmANxA?usp=sharing",
                 quiet=True)

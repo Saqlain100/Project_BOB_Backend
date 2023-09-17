@@ -34,7 +34,7 @@ class QuotesSpider(scrapy.Spider):
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
         logging.info("checking spacy downloading codition")
-        if (os.path.exists(model_path) == False):
+        if (True):
             zip_url = "https://storage.googleapis.com/bob-bucket/spacy-model-best.zip"
             logging.info("downloading spacy folder")
             extract_dir = ''

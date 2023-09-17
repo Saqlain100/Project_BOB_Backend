@@ -25,7 +25,7 @@ class QuotesSpider(scrapy.Spider):
         self.start_date = datetime.now()
         current_directory = os.getcwd()
         model_path = "spacy-model-best"
-        if (os.path.exists(model_path) == False):
+        if (True):
             zip_url = "https://storage.googleapis.com/bob-bucket/spacy-model-best.zip"
             extract_dir = ''
             # Send an HTTP GET request to download the ZIP file
