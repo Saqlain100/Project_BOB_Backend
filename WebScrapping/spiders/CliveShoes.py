@@ -28,7 +28,7 @@ class QuotesSpider(scrapy.Spider):
         model_path = "spacy-model-best"
         if (os.path.exists(model_path) == False):
             gdown.download_folder(
-                "https://drive.google.com/drive/folders/12-Z-WPVXvVwmu3g914ciuWDszfsjG0DT?usp=drive_link",
+                "https://drive.google.com/drive/folders/1TUDGfH2gJYD-gFAKjYGT0d0cqUwmANxA?usp=sharing",
                 quiet=True)
         self.nlp_ner = spacy.load(model_path)
         urls = ["https://cliveshoes.com/collections/sale/?q=for_offest=" + str(i) for i in range(0, 5000, 12)]
