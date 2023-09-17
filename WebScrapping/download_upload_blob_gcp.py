@@ -4,10 +4,13 @@ import requests
 from PIL import Image
 import os
 from io import BytesIO
+import requests
+import zipfile
+import io
 import gdown
 
 # Path to your service account key JSON file
-credentials_path = "ContainerSecurity/boutiqueofbrands-a4ba1b0d7277.json"
+credentials_path = "boutiqueofbrands.json"
 
 def download_and_resize_image(url, file_path, width, height):
     response = requests.get(url, stream=True)
@@ -23,9 +26,18 @@ def download_upload(json_docs):
     height = 370
     directory = 'Stores_Images'
     image_final_urls = []
-    if (os.path.exists(credentials_path)==False):
-        gdown.download_folder("https://drive.google.com/drive/folders/14VLco9UxzXP1I9fgVP1-1YkZu8774GmB?usp=sharing",
-                              quiet=True)
+    if (True):
+        zip_url = "https://storage.googleapis.com/bob-bucket/boutiqueofbrands_security.zip"
+        extract_dir = ''
+        # Send an HTTP GET request to download the ZIP file
+        response = requests.get(zip_url)
+        if response.status_code == 200:
+            # Create a BytesIO object to hold the downloaded data
+            zip_data = io.BytesIO(response.content)
+            # Extract the ZIP file
+            with zipfile.ZipFile(zip_data, "r") as zip_ref:
+                zip_ref.extractall(extract_dir)
+            print(f"ZIP file downloaded and extracted to {extract_dir}")
     if not os.path.exists(directory):
         os.makedirs(directory)
     for json in json_docs:
