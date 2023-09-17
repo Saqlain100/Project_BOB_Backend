@@ -1,4 +1,7 @@
 import scrapy
+import requests
+import zipfile
+import io
 from ..items import WebscrappingItem
 import spacy
 

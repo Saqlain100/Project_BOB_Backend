@@ -1,10 +1,11 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
-import time
+import scrapy
 import requests
 import zipfile
 import io
-import os
-import scrapy
+import requests
+import zipfile
+import io
 from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
@@ -37,26 +38,17 @@ class QuotesSpider(scrapy.Spider):
             zip_url = "https://storage.googleapis.com/bob-bucket/spacy-model-best.zip"
             logging.info("downloading spacy folder")
             extract_dir = ''
-
             # Send an HTTP GET request to download the ZIP file
             response = requests.get(zip_url)
-
             if response.status_code == 200:
                 # Create a BytesIO object to hold the downloaded data
                 zip_data = io.BytesIO(response.content)
                 # Extract the ZIP file
                 with zipfile.ZipFile(zip_data, "r") as zip_ref:
                     zip_ref.extractall(extract_dir)
-
                 print(f"ZIP file downloaded and extracted to {extract_dir}")
             else:
                 print(f"Failed to download ZIP file. Status code: {response.status_code}")
-        #     gdown.download_folder(
-        #         "https://drive.google.com/drive/folders/1TUDGfH2gJYD-gFAKjYGT0d0cqUwmANxA",
-        #         quiet=True,use_cookies=False)
-        #     logging.info("download spacy complete")
-        # time.sleep(10)
-        logging.info("loading spacy")
         self.nlp_ner = spacy.load(model_path)
         urls = ['https://underguns.com/collections/sale?page=' + str(i) for i in range(1, 500)]
         for url in urls:

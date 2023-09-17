@@ -2,6 +2,9 @@
 import logging
 
 import scrapy
+import requests
+import zipfile
+import io
 import pysolr
 import json
 import requests

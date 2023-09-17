@@ -1,5 +1,8 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
 import scrapy
+import requests
+import zipfile
+import io
 from ..items import WebscrappingItem
 import spacy
 from ..download_upload_blob_gcp import download_upload
