@@ -8,6 +8,7 @@ import gdown
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 from bs4 import BeautifulSoup
+import logging
 import re
 class QuotesSpider(scrapy.Spider):
     counter = 0
@@ -26,10 +27,14 @@ class QuotesSpider(scrapy.Spider):
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
         model_path = "spacy-model-best"
+        logging.info("checking spacy downloading codition")
         if (os.path.exists(model_path) == False):
+            logging.info("downloading spacy folder")
             gdown.download_folder(
                 "https://drive.google.com/drive/folders/1TUDGfH2gJYD-gFAKjYGT0d0cqUwmANxA?usp=sharing",
                 quiet=True)
+            logging.info("download spacy complete")
+        logging.info("loading spacy")
         self.nlp_ner = spacy.load(model_path)
         urls = ['https://underguns.com/collections/sale?page=' + str(i) for i in range(1, 500)]
         for url in urls:
