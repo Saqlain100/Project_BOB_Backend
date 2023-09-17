@@ -1,4 +1,6 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
+import time
+
 import scrapy
 from ..items import WebscrappingItem
 import spacy
@@ -34,6 +36,7 @@ class QuotesSpider(scrapy.Spider):
                 "https://drive.google.com/drive/folders/1TUDGfH2gJYD-gFAKjYGT0d0cqUwmANxA?usp=sharing",
                 quiet=True)
             logging.info("download spacy complete")
+        time.sleep(10)
         logging.info("loading spacy")
         self.nlp_ner = spacy.load(model_path)
         urls = ['https://underguns.com/collections/sale?page=' + str(i) for i in range(1, 500)]
