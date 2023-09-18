@@ -55,16 +55,16 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
-        title = response.xpath("//meta[@property='og:title']/@content").extract_first().replace(r"\n", "").strip()
+        title = response.xpath("//title/text()").extract_first().replace(r"\n", "").strip()
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
-        description = response.xpath("//meta[@property='og:description']/@content").extract_first()
+        description = response.xpath("//meta[@name='description']/@content").extract_first()
         old_price = response.xpath(
             "//span[@class='compare__at_price']/text()").extract_first()
         if old_price == None:
             old_price = 0
         final_price = response.xpath("//span[@class='price-item price-item--regular']/text()").extract_first()
         image_links = response.xpath(
-            "//meta[@property='og:image']/@content").extract()
+            "//meta[@property='og:image'][not(contains(@content,'_1_'))][not(contains(@content,'_1.'))][contains(@content,'sokamal')]/@content").extract()
         items["id"] = self.myHash(response.url)
         items["store"] = self.name
         items["url"] = response.url
@@ -98,7 +98,7 @@ class QuotesSpider(scrapy.Spider):
         arr = []
         arr.append(items)
         try:
-            items["final_urls"] = download_upload(arr)
+            items["final_urls"] = download_upload(arr)[1:]
             yield items
         except Exception as e:
             print("Exception occured on calling download & upload function---" + str(e))
