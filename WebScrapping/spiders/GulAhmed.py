@@ -82,7 +82,7 @@ class QuotesSpider(scrapy.Spider):
         items["final_price"] = final_price.replace(r"\n"," ").strip()
         items["image_links"] = image_links
         soup = BeautifulSoup(response.text, "html.parser")
-        items["body"] = soup.get_text()
+        items["body"] = response.text
         try:
             items["discount_d"] = round(((items["old_price_d"]-items["final_price_d"])/items["old_price_d"])*100)
             items["save_d"] = round(items["old_price_d"] - items["final_price_d"])
