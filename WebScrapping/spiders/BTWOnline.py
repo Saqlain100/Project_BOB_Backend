@@ -1,4 +1,5 @@
 import scrapy
+import logging
 import requests
 import zipfile
 import io
@@ -53,6 +54,8 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
+        items["body"] = response.text
+        logging.info(items["body"])
         title = response.xpath("//h1[@class='title']/text()").extract_first().replace(r"\n","").strip()
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
         description = response.xpath("//div[contains(@class,'product-description')]/p/text()").extract_first()

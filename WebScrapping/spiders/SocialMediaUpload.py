@@ -2,6 +2,7 @@
 import logging
 
 import scrapy
+import logging
 import requests
 import zipfile
 import io

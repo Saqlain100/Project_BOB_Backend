@@ -1,5 +1,6 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
 import scrapy
+import logging
 import requests
 import zipfile
 import io
@@ -54,6 +55,8 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_dir_contents(self, response):
         items = WebscrappingItem()
+        items["body"] = response.text
+        logging.info(items["body"])
         title = response.xpath("//h1[@class='page-title']/span/text()").extract_first()
         category = response.xpath('//div[@class="product attribute overview"]/div[@class="value"]/text()').extract()
         description = response.xpath("//div[@itemprop='description']/text()").extract_first()

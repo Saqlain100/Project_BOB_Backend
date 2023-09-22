@@ -1,5 +1,6 @@
 #from reusable_components.download_upload_blob_gcp import download_upload
 import scrapy
+import logging
 import requests
 import json
 import pysolr
