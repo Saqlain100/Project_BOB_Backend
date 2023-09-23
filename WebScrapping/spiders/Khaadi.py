@@ -24,7 +24,7 @@ class QuotesSpider(scrapy.Spider):
     def start_requests(self):
         self.start_date = datetime.now()
 
-        urls = [" https://pk.khaadi.com/sale/?lang=en_PK&p=" + str(i) for i in range(1, 500)]
+        urls = ["https://pk.khaadi.com/on/demandware.store/Sites-Khaadi_PK-Site/en_PK/Search-UpdateGrid?cgid=008-Sale&start=12&sz=1000"]
         current_directory = os.getcwd()
         # Go back two folders
         project_directory = os.path.abspath(os.path.join(current_directory, "..", "..", ".."))
