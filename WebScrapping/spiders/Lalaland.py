@@ -98,7 +98,7 @@ class QuotesSpider(scrapy.Spider):
         arr = []
         arr.append(items)
         try:
-            items["final_urls"] = download_upload(arr)
+            items["final_urls"] = ["NA"]
             yield items
         except Exception as e:
             print("Exception occured on calling download & upload function---" + str(e))
